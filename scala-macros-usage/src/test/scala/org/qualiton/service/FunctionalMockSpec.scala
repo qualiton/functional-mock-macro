@@ -15,6 +15,7 @@ class FunctionalMockSpec extends AnyFreeSpec with Matchers {
         result      <- mockService.service2("test")
         calls       <- mockService.service2HistoryRef.get
         _ <- IO {
+          MockService("printed from generated companion") //Testing generated companion
           result should === (("OK", 4))
           calls should === (Chain(("test", Right(("OK", 4)))))
         }

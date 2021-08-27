@@ -50,6 +50,10 @@ object FunctionalMockImpl {
         val newStats = defClean :: valHistoryRefs ::: defMocks ::: stats.toList
 
         q"""
+           object MockService {
+                def apply(s: String): Unit = println(s)
+           }
+            
            $mods trait $tpname[..$tparams] extends { ..$earlydefns } with ..$parents {
             $self =>
 
