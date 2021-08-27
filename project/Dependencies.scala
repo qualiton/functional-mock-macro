@@ -13,14 +13,13 @@ object Dependencies extends AutoPlugin {
   lazy val prodDependencies = List(
     "org.scala-lang" % "scala-reflect" % "2.13.4",
     "org.typelevel" %% "cats-core"     % "2.6.1",
-    "org.typelevel" %% "cats-effect"   % "3.2.2"
+    "org.typelevel" %% "cats-effect"   % "2.5.3"
   )
 
   lazy val testDependencies = List(
     // Test
     "com.ironcorelabs"     %% "cats-scalatest"      % "3.1.1",
     "org.scalatest"        %% "scalatest"           % "3.2.9",
-    "com.github.cb372"     %% "cats-retry"          % "3.0.0",
     "com.github.chocpanda" %% "scalacheck-magnolia" % "0.6.0"
   ).map(_ % Test)
 }

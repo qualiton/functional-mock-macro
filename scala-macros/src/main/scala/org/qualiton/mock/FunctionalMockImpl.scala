@@ -2,7 +2,6 @@ package org.qualiton.mock
 
 import scala.annotation.StaticAnnotation
 import scala.reflect.macros.whitebox
-import scala.language.experimental.macros
 
 class FunctionalMock extends StaticAnnotation {
   def macroTransform(annottees: Any*): Any = macro FunctionalMockImpl.impl
@@ -32,9 +31,11 @@ object FunctionalMockImpl {
         val newValRefName = TermName(s"${tname.toString()}HistoryRef")
 
         val mockType =
-          paramss.map(p => p.map(p => extractParameterTypeForMockMethod(p))).map(p => q"Ref[F, Chain[..$p, Either[Throwable, $tpt]]]")
-        println(mockType)
-        q"val $newValRefName: $mockType"
+          paramss.map(p => p.map(p => extractParameterTypeForMockMethod(p))).map(p => q"Ref[F, Chain[((..$p), Either[Throwable, $tpt])]]")
+        val t = q"val $newValRefName: ${mockType.head}"
+
+        println(t)
+        t
     }
 
     val result: c.universe.Tree = annottees.map(_.tree).toList match {
@@ -42,13 +43,22 @@ object FunctionalMockImpl {
         val defClean       = q"def clean(): F[Unit]"
         val defMocks       = stats.collect(s => generateAbstractMockMethod(s))
         val valHistoryRefs = stats.collect(s => generateMockHistoryRef(s))
-        val newStats       = defClean :: valHistoryRefs ::: defMocks ::: stats.toList
 
-        q"""$mods trait $tpname[..$tparams] extends { ..$earlydefns } with ..$parents {
-           $self =>
-           ..$newStats
+        val newStats       = defClean :: valHistoryRefs ::: defMocks ::: stats.toList
+//        println(newStats)
+
+        val w = q"""
+           $mods trait $tpname[..$tparams] extends { ..$earlydefns } with ..$parents {
+            $self =>
+
+            import cats.data.Chain
+            import cats.effect.concurrent.Ref
+
+            ..$newStats
          }"""
 
+        println(w)
+        w
       case x =>
         println(x)
         c.abort(c.enclosingPosition, "FunctionalMock should be on traits")
