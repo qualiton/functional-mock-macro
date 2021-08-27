@@ -6,6 +6,7 @@ lazy val commonSettings = List(
   version := "0.1",
   scalaVersion := "2.13.4",
   scalafmtOnCompile := true,
+//  scalacOptions ++= "-Ymacro-annotations" :: "-language:experimental.macros" :: "-Ymacro-debug-lite" :: Nil,
   scalacOptions ++= "-Ymacro-annotations" :: "-language:experimental.macros" :: Nil,
   Global / onChangedBuildSource := ReloadOnSourceChanges,
   addCompilerPlugin("org.typelevel" %% "kind-projector" % "0.13.0" cross CrossVersion.full)

@@ -1,1 +1,1 @@
-# scala-functional-mock
+# Functional Mock Macro
