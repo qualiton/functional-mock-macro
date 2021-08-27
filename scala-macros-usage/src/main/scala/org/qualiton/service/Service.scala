@@ -1,5 +1,6 @@
 package org.qualiton.service
 
+//Service to generate mock for
 trait Service[F[_]] {
   def service1(i: Int, s: String): F[Long]
 
