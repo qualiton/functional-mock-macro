@@ -1,6 +1,6 @@
 package org.qualiton.service
 
-import org.qualiton.mock.FunctionalMock
+import org.qualiton.mock.{ FunctionalMock, genFoo }
 
 //Mock trait needs to be created with all the methods we want mock capability to be genereted for
 @FunctionalMock //Addig this macro annotation trigger the code generation
